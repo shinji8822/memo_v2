@@ -1,6 +1,7 @@
 from datetime import datetime, date
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
@@ -60,5 +61,7 @@ def delete(id):
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run()
+    #app.run()
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
 
