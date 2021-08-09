@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<a class="btn btn-info btn-lg m-5" href="/create" role="button">CREATE NEW TASK</a>
+<a class="btn btn-primary btn-lg m-3" href="/create" role="button">ADD</a>
 {% for post in posts %}
 <div class="card w-75 mb-3" style="margin: auto">
   <div class="card-body">
-    {% if post.due.date() < today %}
-    <div class="alert alert-warning" role="alert">
-        期限切れです!
-    </div>
+    {% if post.due.date() == today %}
+    <span class="badge bg-info text-dark">New</span>
     {% endif %}
-    <h3 class="card-title">タイトル：{{ post.title }}</h3>
-    <p>期限：{{ post.due.date() }} </p>
+    <h5 class="card-title" style="display:inline;">{{ post.title }}</h5>
+    <span class="ml-3" style="font-size: 0.5em;">Due：{{ post.due.date() }} </span>
+    <p>
     <a class="btn btn-secondary btn-sm" href="detail/{{ post.id }}" role="button">Detail</a>
     <a class="btn btn-success btn-sm" href="update/{{ post.id }}" role="button">Update</a>
-    <a class="btn btn-danger btn-sm" href="delete/{{ post.id }}" role="button">Delete</a>
+    <a class="btn btn-danger btn-sm" href="delete/{{ post.id }}" role="button" onclick="return confirm('削除しますか？ [ OK | Cancel ]');">Delete</a>
+    </p>
   </div>
 </div>
 {% endfor %}
