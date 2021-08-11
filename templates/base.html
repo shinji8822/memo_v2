@@ -10,9 +10,16 @@
 <body>
     <nav class="navbar navbar-light bg-light p-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/" style="font-size: 2rem;">Todo</a>
+        <a class="navbar-brand" href="/" style="font-size: 1.5rem;">Todo</a>
     </div>
     </nav>
     {% block body%}{% endblock %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+               {% for message in messages %}
+               <span class="ml-3" style="font-size: 0.5em;">{{ message }}</span>
+               {% endfor %}
+            {% endif %}
+        {% endwith %}
 </body>
 </html>
