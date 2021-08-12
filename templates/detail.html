@@ -3,7 +3,7 @@
 {% block body %}
 <div class="card w-75 mb-3" style="margin: auto">
   <div class="card-body">
-    <h5 class="card-title">{{ post.title }} <span class="ml-3" style="font-size: 0.5em;">Due：{{ post.due.date() }}</span></h5>
+    <h5 class="card-title">{{ post.title }} <span class="ml-3" style="font-size: 0.5em;">date：{{ post.due.date() }}</span></h5>
     <textarea class="form-control" readonly cols="30" rows="20">{{ post.detail }}</textarea>
     <a class="btn btn-outline-success" href="/" role="button">Return</a>
     <a class="btn btn-success" href="/update/{{ post.id }}" role="button">Update</a>

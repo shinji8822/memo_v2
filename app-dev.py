@@ -59,19 +59,11 @@ def login():
         user = User()
         user.id = email
         flask_login.login_user(user)
-        return flask.redirect(flask.url_for('protected'))
+        return flask.redirect(flask.url_for('index'))
 
     #return 'Bad login'
     flash('Invalid username or password. Please try again!')
     return flask.redirect(flask.url_for('login'))
-
-
-@app.route('/protected')
-@flask_login.login_required
-def protected():
-    flash('Logged in as: ' + flask_login.current_user.id)
-    #return 'Logged in as: ' + flask_login.current_user.id
-    return flask.redirect(flask.url_for('index'))
 
 @app.route('/logout')
 def logout():
@@ -80,11 +72,14 @@ def logout():
     return flask.redirect(flask.url_for('login'))
 
 @login_manager.unauthorized_handler
-def unauthorized_handler():
-    return 'Unauthorized'
+#def unauthorized_handler():
+def unauthorized():
+    return flask.redirect('/login')
 
 @app.route('/', methods=['GET','POST'])
+@flask_login.login_required
 def index():
+    flash('Logged in as: ' + flask_login.current_user.id)
     if request.method == 'GET':
         posts = Post.query.order_by(Post.due).all()
         return render_template('index.html', posts=posts, today=date.today())
@@ -102,15 +97,18 @@ def index():
         return redirect('/')
 
 @app.route('/create')
+@flask_login.login_required
 def create():
     return render_template('create.html')
 
 @app.route('/detail/<int:id>')
+@flask_login.login_required
 def read(id):
     post = Post.query.get(id)
     return render_template('detail.html', post=post)
 
 @app.route('/update/<int:id>', methods=['GET','POST'])
+@flask_login.login_required
 def update(id):
     post = Post.query.get(id)
     if request.method == 'GET':
@@ -123,6 +121,7 @@ def update(id):
         return redirect('/')
 
 @app.route('/delete/<int:id>')
+@flask_login.login_required
 def delete(id):
     post = Post.query.get(id)
 
