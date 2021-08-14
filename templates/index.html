@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="card w-75 mb-3" style="margin: auto;border-style: none;">
+<div class="card" style="width: 36rem;margin: 0;padding: 0;text-indent: 10px;border-style: none;">
+<ul class="list-group list-group-flush">
+{% for post in posts %}
+<li class="list-group-item" style="border-style: none;margin: 0;padding: 0;">
+    <a class="btn btn-link btn-sm" href="detail/{{ post.id }}" role="button" style="text-decoration: none;color: black;">
+    {{ post.title }}
+    </a>
+    {% if post.due.date() == today %}
+    <span class="badge bg-info text-dark" style="margin: 0;padding: 2px;text-indent: 0;">NEW!</span>
+    {% endif %}
+    <span class="ml-3" style="font-size: 0.5em;">date：{{ post.due.strftime('%m-%d') }} 
+    <a class="btn btn-link btn-sm" href="delete/{{ post.id }}" role="button" style="text-decoration: none;color: gray;" onclick="return confirm('削除しますか？ [ OK | Cancel ]');">Del</a>
+    </span>
+  </li>
+{% endfor %}
+</ul>
+</div>
+<div class="card w-75 mb-0" style="margin: 0;padding: 0px;text-indent: 10px;border-style: none;">
   <ul class="nav">
-    <li class="nav-item"><a class="nav-link" aria-current="page" href="/create">Add</a></li>
-    <li class="nav-item"><a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a></li>
+    <li class="nav-item"><a class="btn btn-link btn-sm" style="text-decoration: none;color: gray;" aria-current="page" href="/create">Add</a></li>
+    <li class="nav-item"><a class="btn btn-link btn-sm" style="text-decoration: none;color: gray;" href="/logout" tabindex="-1" aria-disabled="true">Logout</a></li>
   </ul>
 </div>
-{% for post in posts %}
-<div class="card w-75 mb-0" style="margin: auto;border-style: none;">
-  <div class="card-body">
-    {% if post.due.date() == today %}
-    <span class="badge bg-info text-dark">New</span>
-    {% endif %}
-    <a class="btn btn-link btn-sm" href="detail/{{ post.id }}" role="button" style="text-decoration: none;color: black;">
-      <h5 class="card-title" style="display:inline;">{{ post.title }}</h5>
-    </a>
-    <span class="ml-3" style="font-size: 0.5em;">date：{{ post.due.date() }} </span>
-    <p>
-    <!--<a class="btn btn-link btn-sm" href="detail/{{ post.id }}" role="button">Detail</a>-->
-    <a class="btn btn-link btn-sm" href="update/{{ post.id }}" role="button">Update</a>
-    <a class="btn btn-link btn-sm" href="delete/{{ post.id }}" role="button" onclick="return confirm('削除しますか？ [ OK | Cancel ]');">Delete</a>
-    </p>
-  </div>
-</div>
-{% endfor %}
 {% endblock body %}

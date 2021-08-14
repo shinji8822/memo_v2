@@ -8,16 +8,17 @@
     {% block head%}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light p-3">
+    <nav class="navbar navbar-light bg-light p-0">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/" style="font-size: 1.5rem;">Todo</a>
+        <a class="navbar-brand" href="/" style="font-size: 1.5rem;margin: 0;padding: 0;">Todo</a>
     </div>
     </nav>
     {% block body%}{% endblock %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                {% for message in messages %}
-               <span class="ml-3" style="font-size: 0.5em;">{{ message }}</span>
+                <hr style="width:50%;margin: 0;padding: 0;text-indent: 10px;">
+                <span class="ml-3" style="font-size: 0.5em;">{{ message }}</span>
                {% endfor %}
             {% endif %}
         {% endwith %}

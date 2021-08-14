@@ -81,7 +81,7 @@ def unauthorized():
 def index():
     flash('Logged in as: ' + flask_login.current_user.id)
     if request.method == 'GET':
-        posts = Post.query.order_by(Post.due).all()
+        posts = Post.query.order_by(Post.due.desc()).all()
         return render_template('index.html', posts=posts, today=date.today())
     else:
         title = request.form.get('title')
