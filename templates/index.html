@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block body %}
+  <div class="ml-3" style="font-size: 0.5em;margin: 0;padding: 0px;text-indent: 15px;">
+      date:
+      <a style="text-decoration: none;color: gray;" href="/?sort=asc">▲</a>
+      <a style="text-decoration: none;color: gray;" href="/?sort=desc">▼</a>
+  </div>
 <div class="card" style="width: 36rem;margin: 0;padding: 0;text-indent: 10px;border-style: none;">
 <ul class="list-group list-group-flush">
 {% for post in posts %}
