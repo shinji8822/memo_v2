@@ -3,8 +3,21 @@
 {% block body %}
   <div class="ml-3" style="font-size: 0.5em;margin: 0;padding: 0px;text-indent: 15px;">
       date:
-      <a style="text-decoration: none;color: gray;" href="/?sort=asc">▲</a>
-      <a style="text-decoration: none;color: gray;" href="/?sort=desc">▼</a>
+      {% if filter1 %}
+        <a style="text-decoration: none;color: gray;" href="/?sort=asc&filter1={{filter1}}">▲</a>
+        <a style="text-decoration: none;color: gray;" href="/?sort=desc&filter1={{filter1}}">▼</a>
+      {% else %}
+        <a style="text-decoration: none;color: gray;" href="/?sort=asc">▲</a>
+        <a style="text-decoration: none;color: gray;" href="/?sort=desc">▼</a>
+      {% endif %}
+      <form style="display: inline" name="filter" method="get" action="/">
+      {% if filter1 %}
+        <input type="text" name="filter1" value="{{filter1}}">
+      {% else %}
+        <input type="text" name="filter1" value="">
+      {% endif %}
+      <a class="btn btn-outline-dark btn-sm" style="font-size: 1.5em;text-decoration: none;color: gray;margin: 0;padding: 0;text-indent: 0" href="javascript:filter.submit()" role="button">検索</a>
+      </form>
   </div>
 <div class="card" style="width: 36rem;margin: 0;padding: 0;text-indent: 10px;border-style: none;">
 <ul class="list-group list-group-flush">

@@ -81,13 +81,21 @@ def unauthorized():
 def index():
     flash('Logged in as: ' + flask_login.current_user.id)
     if request.method == 'GET':
-        #posts = Post.query.order_by(Post.due.desc()).all()
-        #posts = Post.query.order_by(Post.due).all()
-        if (request.args.get('sort','') == 'asc'):
-            posts = Post.query.order_by(Post.due).all()
+        sort=request.args.get('sort','')
+        filter1 = request.args.get('filter1','')
+        if ( sort == 'desc'):
+            #posts = Post.query.order_by(Post.due.desc()).all()
+            if not filter1:
+                posts = Post.query.order_by(Post.due.desc()).all()
+            else:
+                posts = Post.query.order_by(Post.due.desc()).filter((Post.title.like('%' + filter1 + '%') | Post.detail.like('%' + filter1 + '%')))
         else:
-            posts = Post.query.order_by(Post.due.desc()).all()
-        return render_template('index.html', posts=posts, today=date.today())
+            #posts = Post.query.order_by(Post.due).all()
+            if not filter1:
+                posts = Post.query.order_by(Post.due).all()
+            else:
+                posts = Post.query.order_by(Post.due).filter((Post.title.like('%' + filter1 + '%') | Post.detail.like('%' + filter1 + '%')))
+        return render_template('index.html', posts=posts, today=date.today(), sort=sort, filter1=filter1)
     else:
         title = request.form.get('title')
         detail = request.form.get('detail')
