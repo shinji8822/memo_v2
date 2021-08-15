@@ -81,13 +81,48 @@ def unauthorized():
 def index():
     flash('Logged in as: ' + flask_login.current_user.id)
     if request.method == 'GET':
-        #posts = Post.query.order_by(Post.due.desc()).all()
-        #posts = Post.query.order_by(Post.due).all()
-        if (request.args.get('sort','') == 'asc'):
-            posts = Post.query.order_by(Post.due).all()
+        sort=request.args.get('sort','')
+        filter1 = request.args.get('filter1','')
+        if filter1:
+            filter1 = filter1.split()
+            if (len(filter1) == 1):
+                if ( sort == 'desc'):
+                    posts = Post.query.order_by(Post.due.desc()).filter((Post.title.like('%' + filter1[0] + '%') | Post.detail.like('%' + filter1[0] + '%')))
+                else:
+                    posts = Post.query.order_by(Post.due).filter((Post.title.like('%' + filter1[0] + '%') | Post.detail.like('%' + filter1[0] + '%')))
+                return render_template('index.html', posts=posts, today=date.today(), sort=sort, filter1=filter1[0])
+            elif (len(filter1) == 2 ):
+                if ( sort == 'desc'):
+                    posts = Post.query.order_by(Post.due.desc()).filter(
+                        (Post.title.like('%' + filter1[0] + '%') | Post.detail.like('%' + filter1[0] + '%')) & 
+                        (Post.title.like('%' + filter1[1] + '%') | Post.detail.like('%' + filter1[1] + '%'))
+                    )
+                else:
+                    posts = Post.query.order_by(Post.due).filter(
+                        (Post.title.like('%' + filter1[0] + '%') | Post.detail.like('%' + filter1[0] + '%')) & 
+                        (Post.title.like('%' + filter1[1] + '%') | Post.detail.like('%' + filter1[1] + '%'))
+                    )
+                return render_template('index.html', posts=posts, today=date.today(), sort=sort, filter1=str(filter1[0])+ " " +str(filter1[1]) )
+            elif (len(filter1) >= 3 ):
+                if ( sort == 'desc'):
+                    posts = Post.query.order_by(Post.due.desc()).filter(
+                        (Post.title.like('%' + filter1[0] + '%') | Post.detail.like('%' + filter1[0] + '%')) & 
+                        (Post.title.like('%' + filter1[1] + '%') | Post.detail.like('%' + filter1[1] + '%')) & 
+                        (Post.title.like('%' + filter1[2] + '%') | Post.detail.like('%' + filter1[2] + '%'))
+                    )
+                else:
+                    posts = Post.query.order_by(Post.due).filter(
+                        (Post.title.like('%' + filter1[0] + '%') | Post.detail.like('%' + filter1[0] + '%')) & 
+                        (Post.title.like('%' + filter1[1] + '%') | Post.detail.like('%' + filter1[1] + '%')) & 
+                        (Post.title.like('%' + filter1[2] + '%') | Post.detail.like('%' + filter1[2] + '%'))
+                    )
+                return render_template('index.html', posts=posts, today=date.today(), sort=sort, filter1=str(filter1[0])+ " " +str(filter1[1])+ " " +str(filter1[2]) )
         else:
-            posts = Post.query.order_by(Post.due.desc()).all()
-        return render_template('index.html', posts=posts, today=date.today())
+            if ( sort == 'desc'):
+                posts = Post.query.order_by(Post.due.desc()).all()
+            else:
+                posts = Post.query.order_by(Post.due).all()
+            return render_template('index.html', posts=posts, today=date.today(), sort=sort, filter1=filter1)
     else:
         title = request.form.get('title')
         detail = request.form.get('detail')
